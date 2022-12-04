@@ -23,7 +23,7 @@ class SendMail:
         self.smtp_server: str = "smtp.seznam.cz"
         self.port: int = 465  # For starttls
 
-    def send_mail(self, file: str) -> None:
+    def send_mail(self, file: str) -> bool:
 
         filename: str = file.split("/")[-1]  # exract filename from path
 
@@ -59,6 +59,12 @@ class SendMail:
 
         # Log in to server using secure context and send email
         context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as server:
-            server.login(self.sender_email, self.password)
-            server.sendmail(self.sender_email, self.receiver_email, text)
+        try:
+            with smtplib.SMTP_SSL(
+                self.smtp_server, self.port, context=context
+            ) as server:
+                server.login(self.sender_email, self.password)
+                server.sendmail(self.sender_email, self.receiver_email, text)
+                return True
+        except:
+            return False
