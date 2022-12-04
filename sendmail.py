@@ -1,4 +1,4 @@
-import email, smtplib, ssl, pickle, excelmaker, os
+import smtplib, ssl, pickle, excelmaker, os
 
 from email import encoders
 from email.mime.base import MIMEBase

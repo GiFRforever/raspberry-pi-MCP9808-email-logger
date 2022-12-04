@@ -1,0 +1,11 @@
+[Unit]
+Description=Temperature Logger
+After=network-online.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/Desktop/TempLogger/main.py
+WorkingDirectory=/home/pi/Desktop/TempLogger/
+
+[Install]
+WantedBy=multi-user.target
