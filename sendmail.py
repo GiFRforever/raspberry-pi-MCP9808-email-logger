@@ -69,7 +69,7 @@ class SendMail:
             ) as server:
                 server.login(self.sender_email, self.password)
                 server.sendmail(self.sender_email, self.receiver_email, text)
-                os.rename(file, f"LOGGED/{filename}")  # remove excel file
+                os.rename(file, f"LOGGED/{filename}")  # move excel file
                 return True
         except:
             return False

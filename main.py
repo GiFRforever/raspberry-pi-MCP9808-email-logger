@@ -35,15 +35,17 @@ while True:
     print(f"""{now.strftime("%H:%M:%S")} - {teplota}""", end="\r")
     if now.isoformat(timespec="minutes") == "00:00" and (
         int(now.isoformat(timespec="seconds")[17:19]) < 4
-        or int(now.isoformat(timespec="seconds")[17:19]) > 57
+        or int(now.isoformat(timespec="seconds")[17:19]) > 56
     ):  # midnight
         send_command()
+        time.sleep(3)
     elif int(now.isoformat(timespec="minutes")[14:16]) % 5 == 0 and (
-        int(now.isoformat(timespec="seconds")[17:19]) < 3
-        or int(now.isoformat(timespec="seconds")[17:19]) > 57
+        int(now.isoformat(timespec="seconds")[17:19]) < 4
+        or int(now.isoformat(timespec="seconds")[17:19]) > 56
     ):  # every 5 minutes
         with open(f"WIP/{today}", "a") as f:
             temp: str = f"""{now.strftime("%H:%M")};{str(round(teplota, 2)).replace(".", ",")}"""
             f.write(f"{temp}\n")
             # print(f"{temp}                ")
+        time.sleep(3)
     time.sleep(5)
