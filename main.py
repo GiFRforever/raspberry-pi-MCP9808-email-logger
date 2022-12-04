@@ -21,7 +21,7 @@ def send_command() -> None:
                     os.popen(f"copy TempTemplate.xlsx WIP/{file}.xlsx")
                 """
                 if sendmail.SendMail().send_mail(f"WIP/{file}"):
-                    os.rename(f"WIP/{file}", f"LOGGED/{file}")
+                    os.rename(f"WIP/{file}", f"LOGGED/{file}.csv")
     if str(today) not in dir_wip:
         with open(f"WIP/{today}", "w") as f:
             f.write("Time;Temperature\n")

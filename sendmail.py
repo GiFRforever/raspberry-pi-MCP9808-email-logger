@@ -25,12 +25,14 @@ class SendMail:
 
     def send_mail(self, file: str) -> bool:
 
-        excelmaker.make_excel(file)  # make excel file from csv
+        maxTemp, maxTempCas, minTemp, minTempCas, avg = excelmaker.make_excel(
+            file
+        )  # make excel file from csv
         file += ".xlsx"  # add extension
         filename: str = file.split("/")[-1]  # exract filename from path
 
         self.subject: str = f"""Teploty z {". ".join(filename.split("-")[::-1])}"""
-        self.body: str = "Data jsou v příloze"
+        self.body: str = f"Průměrná teplota byla {avg} °C\nNejvyšší teplota {maxTemp} °C v {maxTempCas}\nNejnižší teplota {minTemp} °C v {minTempCas}\nData jsou v příloze"
 
         # Create a multipart self.message and set headers
         self.message: MIMEMultipart = MIMEMultipart()
@@ -67,7 +69,7 @@ class SendMail:
             ) as server:
                 server.login(self.sender_email, self.password)
                 server.sendmail(self.sender_email, self.receiver_email, text)
-                os.remove(file)  # remove excel file
+                os.rename(file, f"LOGGED/{filename}")  # remove excel file
                 return True
         except:
             return False
