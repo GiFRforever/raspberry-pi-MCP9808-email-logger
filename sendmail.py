@@ -29,7 +29,7 @@ class SendMail:
         file += ".xlsx"  # add extension
         filename: str = file.split("/")[-1]  # exract filename from path
 
-        self.subject: str = f"Teploty z {filename}"
+        self.subject: str = f"""Teploty z {". ".join(filename.split("-")[::-1])}"""
         self.body: str = "Data jsou v příloze"
 
         # Create a multipart self.message and set headers
