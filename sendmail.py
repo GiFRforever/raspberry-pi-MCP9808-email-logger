@@ -1,4 +1,4 @@
-import email, smtplib, ssl, pickle, excelmaker
+import email, smtplib, ssl, pickle, excelmaker, os
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -67,9 +67,7 @@ class SendMail:
             ) as server:
                 server.login(self.sender_email, self.password)
                 server.sendmail(self.sender_email, self.receiver_email, text)
+                os.remove(file)  # remove excel file
                 return True
         except:
             return False
-
-
-SendMail().send_mail("WIP/2022-12-04")
