@@ -1,4 +1,4 @@
-import email, smtplib, ssl, pickle
+import email, smtplib, ssl, pickle, excelmaker
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -25,6 +25,8 @@ class SendMail:
 
     def send_mail(self, file: str) -> bool:
 
+        excelmaker.make_excel(file)  # make excel file from csv
+        file += ".xlsx"  # add extension
         filename: str = file.split("/")[-1]  # exract filename from path
 
         self.subject: str = f"Teploty z {filename}"
@@ -51,7 +53,7 @@ class SendMail:
         encoders.encode_base64(part)
 
         # Add header as key/value pair to attachment part
-        part.add_header("Content-Disposition", "attachment", filename=f"{filename}.csv")
+        part.add_header("Content-Disposition", "attachment", filename=f"{filename}")
 
         # Add attachment to self.message and convert self.message to string
         self.message.attach(part)
@@ -68,3 +70,6 @@ class SendMail:
                 return True
         except:
             return False
+
+
+SendMail().send_mail("WIP/2022-12-04")

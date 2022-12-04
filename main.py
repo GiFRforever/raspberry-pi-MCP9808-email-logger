@@ -3,6 +3,7 @@ import sendmail
 import time
 from datetime import date, datetime
 import os
+from sys import platform
 
 if __name__ != "__main__":
     raise Exception("This script should not be imported")
@@ -13,6 +14,12 @@ def send_command() -> None:
     if (dir_wip := os.listdir("WIP")) != []:
         for file in dir_wip:
             if file != str(today):
+                """for coping template file to WIP folder
+                if platform.startswith("linux"):
+                    os.popen(f"cp TempTemplate.xlsx WIP/{file}.xlsx")
+                elif platform.startswith("win"):
+                    os.popen(f"copy TempTemplate.xlsx WIP/{file}.xlsx")
+                """
                 if sendmail.SendMail().send_mail(f"WIP/{file}"):
                     os.rename(f"WIP/{file}", f"LOGGED/{file}")
     if str(today) not in dir_wip:
