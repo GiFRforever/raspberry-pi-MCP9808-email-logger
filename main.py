@@ -10,7 +10,6 @@ if __name__ != "__main__":
 
 def send_command() -> None:
     global today
-    today: date = date.today()
     if (dir_wip := os.listdir("WIP")) != []:
         for file in dir_wip:
             if file != str(today):
@@ -21,6 +20,7 @@ def send_command() -> None:
             f.write("Time;Temperature\n")
 
 
+today: date = date.today()
 send_command()  # send all old files from WIP folder and prepare today's file
 while True:
     teplota: float = readtemp.MCP9808().read_temp()
