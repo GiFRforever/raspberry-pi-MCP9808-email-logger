@@ -28,11 +28,14 @@ class SendMail:
         maxTemp, maxTempCas, minTemp, minTempCas, avg = excelmaker.make_excel(
             file
         )  # make excel file from csv
-        file += ".xlsx"  # add extension
+        # file += ".xlsx"  # add extension
         filename: str = file.split("/")[-1]  # exract filename from path
 
         self.subject: str = f"""Teploty z {". ".join(filename.split("-")[::-1])}"""
         self.body: str = f"Průměrná teplota byla {avg} °C\nNejvyšší teplota {maxTemp} °C v {maxTempCas}\nNejnižší teplota {minTemp} °C v {minTempCas}\nData jsou v příloze"
+
+        file += ".xlsx"  # add extension
+        filename: str = file.split("/")[-1]  # exract filename from path
 
         # Create a multipart self.message and set headers
         self.message: MIMEMultipart = MIMEMultipart()
