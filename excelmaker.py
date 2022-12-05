@@ -10,7 +10,7 @@ def make_excel(path) -> tuple[float, str, float, str, float]:
     datum: list[int] = [int(x) for x in filename.split("-")]
     maxTemp: float = 0
     maxTempCas: str = ""
-    minTemp: float = 0
+    minTemp: float = 100
     minTempCas: str = ""
     kdy: list[int] = []
     teploty: list[float] = []
@@ -32,7 +32,7 @@ def make_excel(path) -> tuple[float, str, float, str, float]:
                             minTemp = teplota
                             minTempCas = ":".join([str(x) for x in kdy])
 
-    avg: float = sum(teploty) / len(teploty)
+    avg: float = round(sum(teploty) / len(teploty), 2)
     wb.save(f"{path}.xlsx")
     return maxTemp, maxTempCas, minTemp, minTempCas, avg
 
