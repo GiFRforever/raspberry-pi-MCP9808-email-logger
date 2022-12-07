@@ -31,6 +31,9 @@ while True:
     if int(now.isoformat(timespec="seconds")[17:19]) < 7:
         if now.isoformat(timespec="minutes")[11:16] == "00:00":  # midnight
             send_command()
+            with open(f"WIP/{today}", "a") as f:
+                temp: str = f"""{now.strftime("%H:%M")};{str(round(teplota, 2)).replace(".", ",")}"""
+                f.write(f"{temp}\n")
             time.sleep(3)
         elif int(now.isoformat(timespec="minutes")[14:16]) % 5 == 0:  # every 5 minutes
             with open(f"WIP/{today}", "a") as f:
