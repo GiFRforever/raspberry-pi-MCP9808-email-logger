@@ -10,7 +10,7 @@ from getpass import getpass
 
 class SendMail:
     def __init__(self) -> None:
-        try:  # load credentials from file
+        """try:  # load credentials from file
             with open("credentials.pickle", "rb") as f:
                 self.password: str = pickle.load(f)
         except FileNotFoundError:
@@ -21,9 +21,9 @@ class SendMail:
         self.sender_email: str = "odpadzreklam@seznam.cz"
         self.receiver_email: str = "frantisek.clupny@email.cz"
         self.smtp_server: str = "smtp.seznam.cz"
-        self.port: int = 465  # For starttls
+        self.port: int = 465  # For starttls"""
 
-        """try: # nefunguje
+        try:  # nefunguje
             with open("config.json", "r") as f:
                 config = json.load(f)
         except FileNotFoundError:
@@ -32,13 +32,13 @@ class SendMail:
         try:
             self.password: str = config["password"]
             self.sender_email: str = config["sender_email"]
-            self.receiver_email: list = config["receiver_email"]
+            self.receiver_email: str = config["receiver_email"]
             self.smtp_server: str = config["smtp_server"]
             self.port: int = config["port"]
         except KeyError:
             raise KeyError("config.json is not valid. Check README.md for more info")
 
-        # print all config; debug part
+        """# print all config; debug part
         print(f"Sender email: {self.sender_email}")
         print(f"Receiver email: {self.receiver_email}")
         print(f"SMTP server: {self.smtp_server}")
@@ -99,8 +99,8 @@ class SendMail:
                 self.smtp_server, self.port, context=context
             ) as server:
                 server.login(self.sender_email, self.password)
-                for receiver in self.receiver_email:
-                    server.sendmail(self.sender_email, receiver, text)
+                # for receiver in self.receiver_email: brakes for some reason
+                server.sendmail(self.sender_email, self.receiver_email, text)
                 os.replace(file, f"LOGGED/{filename}")  # move excel file
                 return True
         except:

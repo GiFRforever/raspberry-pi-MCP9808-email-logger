@@ -1,9 +1,6 @@
 {
     "self.sender_email": "sender@mail.com",
-    "self.receiver_email": [
-        "receiver1@mail.com",
-        "receiver2@mail.com"
-    ],
+    "self.receiver_email": "receiver1@mail.com",
     "self.smtp_server": "smtp.mail.com",
     "self.port": "465",
     "__whichport__": "587 for starttls, 465 for ssl",
