@@ -1,14 +1,29 @@
-import smtplib, ssl, excelmaker, os, json
+import smtplib, ssl, pickle, excelmaker, os, json
 
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from getpass import getpass
+
 
 class SendMail:
     def __init__(self) -> None:
-        try:
+        try:  # load credentials from file
+            with open("credentials.pickle", "rb") as f:
+                self.password: str = pickle.load(f)
+        except FileNotFoundError:
+            self.password = getpass("Password: ")
+            if input("Save password? [y/n]: ").lower() == "y":
+                with open("credentials.pickle", "wb") as f:
+                    pickle.dump(self.password, f)
+        self.sender_email: str = "odpadzreklam@seznam.cz"
+        self.receiver_email: str = "frantisek.clupny@email.cz"
+        self.smtp_server: str = "smtp.seznam.cz"
+        self.port: int = 465  # For starttls
+
+        """try: # nefunguje
             with open("config.json", "r") as f:
                 config = json.load(f)
         except FileNotFoundError:
@@ -23,7 +38,7 @@ class SendMail:
         except KeyError:
             raise KeyError("config.json is not valid. Check README.md for more info")
 
-        """# print all config; debug part
+        # print all config; debug part
         print(f"Sender email: {self.sender_email}")
         print(f"Receiver email: {self.receiver_email}")
         print(f"SMTP server: {self.smtp_server}")
@@ -86,16 +101,17 @@ class SendMail:
                 server.login(self.sender_email, self.password)
                 for receiver in self.receiver_email:
                     server.sendmail(self.sender_email, receiver, text)
-                os.rename(file, f"LOGGED/{filename}")  # move excel file
+                os.replace(file, f"LOGGED/{filename}")  # move excel file
                 return True
         except:
             return False
 
 
 if __name__ == "__main__":
-    SendMail()
     try:
         for file in os.listdir("WIP"):
-            SendMail().send_mail(f"WIP/{file}")
+            if not file.endswith(".xlsx"):
+                if SendMail().send_mail(f"WIP/{file}"):
+                    print(f"Email sent for {file}")
     except FileNotFoundError:
         print("WIP folder not found")
