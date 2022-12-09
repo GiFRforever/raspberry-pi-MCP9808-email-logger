@@ -1,27 +1,40 @@
-import smtplib, ssl, pickle, excelmaker, os
+import smtplib, ssl, excelmaker, os, json
 
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from getpass import getpass
-
 
 class SendMail:
     def __init__(self) -> None:
-        try:  # load credentials from file
-            with open("credentials.pickle", "rb") as f:
-                self.password: str = pickle.load(f)
+        try:
+            with open("config.json", "r") as f:
+                config = json.load(f)
         except FileNotFoundError:
-            self.password = getpass("Password: ")
-            if input("Save password? [y/n]: ").lower() == "y":
-                with open("credentials.pickle", "wb") as f:
-                    pickle.dump(self.password, f)
-        self.sender_email: str = "odpadzreklam@seznam.cz"
-        self.receiver_email: str = "frantisek.clupny@email.cz"
-        self.smtp_server: str = "smtp.seznam.cz"
-        self.port: int = 465  # For starttls
+            raise FileNotFoundError("config.json not found")
+
+        try:
+            self.password: str = config["password"]
+            self.sender_email: str = config["sender_email"]
+            self.receiver_email: list = config["receiver_email"]
+            self.smtp_server: str = config["smtp_server"]
+            self.port: int = config["port"]
+        except KeyError:
+            raise KeyError("config.json is not valid. Check README.md for more info")
+
+        """# print all config; debug part
+        print(f"Sender email: {self.sender_email}")
+        print(f"Receiver email: {self.receiver_email}")
+        print(f"SMTP server: {self.smtp_server}")
+        print(f"Port: {self.port}")
+        print(f"Password: {self.password}")
+        # print all config type
+        print(f"Sender email type: {type(self.sender_email)}")
+        print(f"Receiver email type: {type(self.receiver_email)}")
+        print(f"SMTP server type: {type(self.smtp_server)}")
+        print(f"Port type: {type(self.port)}")
+        print(f"Password type: {type(self.password)}")"""
 
     def send_mail(self, file: str) -> bool:
 
@@ -71,8 +84,18 @@ class SendMail:
                 self.smtp_server, self.port, context=context
             ) as server:
                 server.login(self.sender_email, self.password)
-                server.sendmail(self.sender_email, self.receiver_email, text)
+                for receiver in self.receiver_email:
+                    server.sendmail(self.sender_email, receiver, text)
                 os.rename(file, f"LOGGED/{filename}")  # move excel file
                 return True
         except:
             return False
+
+
+if __name__ == "__main__":
+    SendMail()
+    try:
+        for file in os.listdir("WIP"):
+            SendMail().send_mail(f"WIP/{file}")
+    except FileNotFoundError:
+        print("WIP folder not found")
