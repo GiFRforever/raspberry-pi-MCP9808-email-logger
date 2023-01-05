@@ -12,7 +12,7 @@ fi
 # Start the makeconfig, unless service is running
 if ! systemctl is-active --quiet templogger.service; then
   # Start the other makeconfig.sh in the foreground
-  bash /makeconfig.sh
+  bash makeconfig.sh
   
   # Store the PID of the makeconfig.sh
   OTHER_SCRIPT_PID=$! 
