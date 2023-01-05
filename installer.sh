@@ -9,6 +9,15 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+# Start the makeconfig, unless service is running
+if ! systemctl is-active --quiet templogger.service; then
+  # Start the other makeconfig.sh in the foreground
+  bash /makeconfig.sh
+  
+  # Store the PID of the makeconfig.sh
+  OTHER_SCRIPT_PID=$! 
+fi
+
 # Check if the required packages are already installed
 REQUIRED_PACKAGES=`grep -E "^[^#]" requirements.txt`
 INSTALLED_PACKAGES=`pip freeze`
@@ -32,6 +41,8 @@ systemctl enable templogger.service
 
 # Start the service, unless it's already running
 if ! systemctl is-active --quiet templogger.service; then
+  # Wait for the other script to finish
+  wait $OTHER_SCRIPT_PID
   systemctl start templogger.service
 fi
 
