@@ -23,6 +23,10 @@ done
 # Copy the service file and enable it
 cp templogger.service /lib/systemd/system/
 chmod 644 /lib/systemd/system/templogger.service
+
+# Replace the working directory placeholder in the service file with the current working directory
+sed -i "s#{CWD}#$(pwd)#" /lib/systemd/system/templogger.service
+
 systemctl daemon-reload
 systemctl enable templogger.service
 
