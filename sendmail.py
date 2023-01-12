@@ -36,20 +36,19 @@ class SendMail:
             self.smtp_server: str = config["smtp_server"]
             self.port: int = config["port"]
         except KeyError:
+            # print all config; debug part
+            print(f"Sender email: {self.sender_email}")
+            print(f"Receiver email: {self.receiver_email}")
+            print(f"SMTP server: {self.smtp_server}")
+            print(f"Port: {self.port}")
+            print(f"Password: {self.password}")
+            # print all config type
+            print(f"Sender email type: {type(self.sender_email)}")
+            print(f"Receiver email type: {type(self.receiver_email)}")
+            print(f"SMTP server type: {type(self.smtp_server)}")
+            print(f"Port type: {type(self.port)}")
+            print(f"Password type: {type(self.password)}")
             raise KeyError("config.json is not valid. Check README.md for more info")
-
-        """# print all config; debug part
-        print(f"Sender email: {self.sender_email}")
-        print(f"Receiver email: {self.receiver_email}")
-        print(f"SMTP server: {self.smtp_server}")
-        print(f"Port: {self.port}")
-        print(f"Password: {self.password}")
-        # print all config type
-        print(f"Sender email type: {type(self.sender_email)}")
-        print(f"Receiver email type: {type(self.receiver_email)}")
-        print(f"SMTP server type: {type(self.smtp_server)}")
-        print(f"Port type: {type(self.port)}")
-        print(f"Password type: {type(self.password)}")"""
 
     def send_mail(self, file: str) -> bool:
 

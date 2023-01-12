@@ -1,4 +1,4 @@
-if input("Do you want to create a new config? (y/n) ") == "n":
+if input("Do you want to create a new config? (Y/n) ").lower().count("n"):
     exit()
 
 with open("configtemplate.json") as f:
