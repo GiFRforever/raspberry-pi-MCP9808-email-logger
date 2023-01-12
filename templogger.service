@@ -3,7 +3,7 @@ Description=Temperature logger service
 
 [Service]
 Type=simple
-ExecStart={CWD}/readtemp.py
+ExecStart={CWD}/main.py
 WorkingDirectory={CWD}
 Restart=always
 
