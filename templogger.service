@@ -3,7 +3,7 @@ Description=Temperature logger service
 
 [Service]
 Type=simple
-ExecStart={CWD}/main.py
+ExecStart=/usr/bin/python {CWD}/main.py
 WorkingDirectory={CWD}
 Restart=always
 
