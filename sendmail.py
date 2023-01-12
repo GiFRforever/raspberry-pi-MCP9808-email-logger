@@ -52,6 +52,9 @@ class SendMail:
 
     def send_mail(self, file: str) -> bool:
 
+        if file.endswith((".csv", ".xlsx")):
+            return True
+
         maxTemp, maxTempCas, minTemp, minTempCas, avg = excelmaker.make_excel(
             file
         )  # make excel file from csv
