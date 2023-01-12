@@ -42,5 +42,5 @@ class MCP9808:
 
 if __name__ == "__main__":
     while True:
-        print("Temperature in Celsius is : %.2f C" % MCP9808.read_temp)
+        print("Temperature in Celsius is : %.2f C" % MCP9808().read_temp(), end="\r")
         time.sleep(1)
