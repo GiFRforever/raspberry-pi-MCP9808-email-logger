@@ -1,3 +1,6 @@
+if input("Do you want to create a new config? (y/n) ") == "n":
+    exit()
+
 with open("configtemplate.json") as f:
     with open("config.json", "w") as g:
         for line in f.readlines():
