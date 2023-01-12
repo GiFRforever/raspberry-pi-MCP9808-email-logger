@@ -1,5 +1,5 @@
 credentials.pickle
 config.json
 __pycache__
-LOGGED
-WIP
+LOGGED/*
+WIP/*
